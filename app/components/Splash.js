@@ -26,7 +26,7 @@ export default class Splash extends Component {
     }
   }
   componentDidMount(){
-    setTimeout( () => this.props.navigator.push({id:"campaign"}), 3000);
+    setTimeout( () => this.props.navigator.push({id:"character"}), 3000);
   }
   render() {
     return (
