@@ -32,7 +32,7 @@ export default class Nav extends Component {
     return (
       <View style={styles.container} >
       <TouchableOpacity><Icon name = "more-vert" size={30} color='#fff' style={{margin:5}} /></TouchableOpacity>
-      <Image source={require('../../images/ballz.png')} resizeMode ="contain" style={{height:60, width:60, marginTop:10}} />
+      <Image source={require('../../images/ballz.png')} resizeMode ="contain" style={{height:60, width:260, marginTop:10}} />
       <TouchableOpacity><Icon name = "style" size={30} color='#fff' style={{margin:5}} /></TouchableOpacity>
       </View>
     );
