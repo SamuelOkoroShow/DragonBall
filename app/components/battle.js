@@ -18,14 +18,35 @@ import {
 
 var {height, width} = Dimensions.get('window');
 var i;
+// Every Character gets a turn to move and a turn to attack.
+const empty = "empty";
+const occupied = "occupied"
+var tiles1 = [occupied, occupied, occupied, empty, empty,empty]
 export default class battle extends Component {
   constructor(props){
     super(props)
     this.state = {
-      width:0
+      width:0,
+      character1:{
+        heath:100,
+        tile:0
+      },
+      character2:{
+        heath:100,
+        tile:1
+      },
+      character3:{
+        heath:100,
+        tile:2
+      }
     }
   }
   
+  // Action are all right here
+  updateCard(){}
+  updateBoard(){}
+  updateHealth(){}
+
   render() {
     return (
       <View style={styles.container} >
