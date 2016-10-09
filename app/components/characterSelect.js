@@ -18,9 +18,12 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+var i = 0;
 
 var {height, width} = Dimensions.get('window');
 var i;
+var selectedChars = []
+
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 import Nav from "./widgets/nav"
 
@@ -32,6 +35,8 @@ export default class Splash extends Component {
       width:0,
       character: this.props.characters[0],
       dataSource: ds.cloneWithRows(this.props.characters),
+      selected: ds.cloneWithRows(selectedChars),
+      sorted:false
     }
   }
   componentWillMount(){
@@ -49,6 +54,35 @@ export default class Splash extends Component {
     this.setState({
       character:x
     })
+    if(selectedChars.length < 3){
+      selectedChars.push(x)
+      if(selectedChars.length == 3){
+        this.setState({
+              sorted:true
+            })
+      }
+    }else{
+
+      selectedChars[i] = x;
+      i++;
+      if(i > 2){
+        i = 0
+      }
+    }
+    this.setState({
+      selected: ds.cloneWithRows(selectedChars),
+    })
+  }
+
+  fight(){
+      if(this.state.sorted){
+      return(
+         <TouchableOpacity style={{flex:0}}>
+        <Image source={require('../images/fight.png')} resizeMode="contain" style={{height:80, width:130, margin:10}} />
+        </TouchableOpacity>
+        )}else{
+        return(<View />)
+        }
   }
 
   eachTab(x){
@@ -57,11 +91,17 @@ export default class Splash extends Component {
       <Image source = {x.team} resizeMode="contain" style={{height:100,width:100}} />
       </TouchableOpacity>)
   }
+  eachChar(x){
+    return(
+      <View style={{ width:120, justifyContent:'center', alignItems:'center', borderRadius:5,}}>
+      <Image source = {x.attack2.image} resizeMode="contain" style={{height:150,width:150}} />
+      </View>)
+  }
 
   render() {
     return (
       <View style={{flex:1}} >
-      <Animated.Image source={require('../images/background.jpg')} resizeMode="contain" style={{position:'absolute', left:-500, top:0, width:width*5+160, height:height, transform: [{translateX: this._animatedValue}] }} />
+      <Animated.Image source={require('../images/background.jpg')} resizeMode="cover" style={{position:'absolute', left:0, top:0, width:width*4+160, height:height, transform: [{translateX: this._animatedValue}] }} />
       <Image source = {this.state.character.image} resizeMode="contain" style={{height:height/2 + 100, width:width/2 + 100, position:'absolute', left:210, top:150}} /> 
       <Nav />
       <ListView
@@ -71,6 +111,15 @@ export default class Splash extends Component {
       />
       <View style={{flex:1, justifyContent:'center'}}>
       <Text style={{color:'#e7e7e7', margin:10, shadowColor: "#000000", shadowOpacity: 0.3, shadowRadius: 3, shadowOffset: { height: 3, width: 0 }, fontSize:80}}>{this.state.character.name.toUpperCase()}</Text>
+     <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+       <ListView
+      dataSource={this.state.selected}
+      horizontal = {true}
+      style={{width:200}}
+      renderRow={(rowData) => this.eachChar(rowData)}
+      />
+     {this.fight()}
+      </View>
       </View>
       </View>
     );
