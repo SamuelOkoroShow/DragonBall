@@ -38,6 +38,8 @@ var vegetaIm = {
   team: require('../images/vegeta/team.png')
 }
 
+
+
 var vegeta = {
   name:'vegeta',
   health:300,
@@ -96,6 +98,11 @@ export default class battle extends Component {
     }
   }
   
+  componentDidMount(){
+    this.setState({
+      turnArray: [this.props.team[0],this.props.team[1],this.state.team[2], vegeta]
+    })
+  }
   // Action are all right here
   updateCard(){}
 
