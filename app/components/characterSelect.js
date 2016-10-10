@@ -45,7 +45,7 @@ export default class Splash extends Component {
 
  componentDidMount() {
     Animated.timing(this._animatedValue, {
-        toValue: -2500,
+        toValue: -2000,
         duration: 80500
     }).start();
   }
@@ -73,11 +73,16 @@ export default class Splash extends Component {
       selected: ds.cloneWithRows(selectedChars),
     })
   }
-
+  startGame(){
+    this.props.navigator.push({
+      id:'battle',
+      team: selectedChars
+    })
+  }
   fight(){
       if(this.state.sorted){
       return(
-         <TouchableOpacity style={{flex:0}}>
+         <TouchableOpacity onPress ={() => this.startGame()} style={{flex:0}}>
         <Image source={require('../images/fight.png')} resizeMode="contain" style={{height:80, width:130, margin:10}} />
         </TouchableOpacity>
         )}else{
@@ -116,6 +121,7 @@ export default class Splash extends Component {
       dataSource={this.state.selected}
       horizontal = {true}
       style={{width:200}}
+      enableEmptySections = {true}
       renderRow={(rowData) => this.eachChar(rowData)}
       />
      {this.fight()}

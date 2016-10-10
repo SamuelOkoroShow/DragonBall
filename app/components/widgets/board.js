@@ -29,7 +29,7 @@ export default class Board extends Component {
 
   render() {
     return (
-      <Image source={require('../..images/namek.jph')} style={styles.container} resizeMode="contain" >
+      <Image source={require('../..images/namek.jpg')} style={styles.container} resizeMode="contain" >
       
       </Image>
     );

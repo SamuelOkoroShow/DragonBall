@@ -253,7 +253,8 @@ export default class Index extends Component {
     if (routeId === 'battle') {
       return (
         <Battle
-        {...this.props} 
+        {...this.props}
+        team = {route.team} 
         navigator={navigator} />
         );
     }
