@@ -45,8 +45,8 @@ export default class Splash extends Component {
 
  componentDidMount() {
     Animated.timing(this._animatedValue, {
-        toValue: -1900,
-        duration: 71500
+        toValue: -2500,
+        duration: 80500
     }).start();
   }
 
@@ -94,7 +94,7 @@ export default class Splash extends Component {
   eachChar(x){
     return(
       <View style={{ width:120, justifyContent:'center', alignItems:'center', borderRadius:5,}}>
-      <Image source = {x.attack2.image} resizeMode="contain" style={{height:150,width:150}} />
+      <Image source = {x.attack1.image} resizeMode="contain" style={{height:150,width:150}} />
       </View>)
   }
 
@@ -110,7 +110,7 @@ export default class Splash extends Component {
       renderRow={(rowData) => this.eachTab(rowData)}
       />
       <View style={{flex:1, justifyContent:'center'}}>
-      <Text style={{color:'#e7e7e7', margin:10, shadowColor: "#000000", shadowOpacity: 0.3, shadowRadius: 3, shadowOffset: { height: 3, width: 0 }, fontSize:80}}>{this.state.character.name.toUpperCase()}</Text>
+      <Text style={{color:'#e7e7e7', fontWeight:'900', margin:10, shadowColor: "#000000", shadowOpacity: 0.3, shadowRadius: 3, shadowOffset: { height: 3, width: 0 }, fontSize:80}}>{this.state.character.name.toUpperCase()}</Text>
      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
        <ListView
       dataSource={this.state.selected}
