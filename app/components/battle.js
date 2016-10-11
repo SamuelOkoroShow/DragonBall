@@ -140,6 +140,10 @@ this.setState({
     }
   }
 
+  turnLogin(){
+    
+  }
+
   queueModal(x){
     this.setState({
       selectedCharacter:x
