@@ -66,10 +66,12 @@ var characters = [
   name:'Super Gohan',
   health:100,
   attack:10,
+  ref :"gohan",
   defence:10,
   image: gohan.select,
   team: gohan.team,
   attack1:{
+    name:"Kung Fu Skills",
     desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
     type:affliction,
     image: gohan.attack1,
@@ -78,6 +80,7 @@ var characters = [
 
   },
   attack2:{
+    name:'Gangstar Yell',
     desc: "Dude. Gohan like gets mad and does this thing where his defense goes up for 2 turns. it's crazy",
     type:defence,
     image: gohan.attack2,
@@ -86,6 +89,7 @@ var characters = [
 
   },
   attack3:{
+    name:"Flyin' Like A Boss",
     desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
     type: evasionAttack,
     image: gohan.attack3,
@@ -96,14 +100,16 @@ var characters = [
   }
 },
 {
-  name:'trunks',
+  name:'Trunks',
   health:100,
   attack:10,
+  ref :"trunks",
   defence:10,
   image: trunks.select,
   team: trunks.team,
   attack1:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name: 'Throat Punch',
+    desc: "Nobody likes being punched in the throat. That's why he does it",
     type:affliction,
     image: trunks.attack1,
     stack: 5,
@@ -111,7 +117,8 @@ var characters = [
 
   },
   attack2:{
-    desc: "Dude. Gohan like gets mad and does this thing where his defense goes up for 2 turns. it's crazy",
+    name: "I'm coming, Bitch!!!",
+    desc: "Trunks slashes his enemy with his sword and it really really hurts",
     type:defence,
     image: trunks.attack2,
     stack: 10,
@@ -119,7 +126,8 @@ var characters = [
 
   },
   attack3:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:"I can fly, Bitch!!!",
+    desc: "Trunks Flys like a boss",
     type: evasionAttack,
     image: trunks.attack3,
     stack: 5,
@@ -133,10 +141,12 @@ var characters = [
   health:100,
   attack:10,
   defence:10,
+  ref :"krillin",
   image: krillin.select,
   team: krillin.team,
   attack1:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:'Smell My Armpits, Bitch!!',
+    desc: "Krillin can't create a distructo disc, but he can make you smell his pits",
     type:affliction,
     image: krillin.attack1,
     stack: 5,
@@ -144,7 +154,8 @@ var characters = [
 
   },
   attack2:{
-    desc: "Dude. Gohan like gets mad and does this thing where his defense goes up for 2 turns. it's crazy",
+    name:"Slap A Bitch",
+    desc: "Krillin gets hella mad and slaps his enemy in the face. +10 defence for being a boss",
     type:defence,
     image: krillin.attack2,
     stack: 10,
@@ -152,7 +163,8 @@ var characters = [
 
   },
   attack3:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:"Kick His Face!!",
+    desc: "Krillin kicks his enemy in the face. It really hurts",
     type: evasionAttack,
     image: krillin.attack3,
     stack: 5,
@@ -166,10 +178,12 @@ var characters = [
   health:100,
   attack:10,
   defence:10,
+  ref :"eight",
   image: eighteen.select,
   team: eighteen.team,
   attack1:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:"Lazer Eyes",
+    desc: "18 uses her iconic eyebeams to melt her enemy. That's what you get fool!",
     type:affliction,
     image: eighteen.attack1,
     stack: 5,
@@ -177,7 +191,8 @@ var characters = [
 
   },
   attack2:{
-    desc: "Dude. Gohan like gets mad and does this thing where his defense goes up for 2 turns. it's crazy",
+    name:'Throat Punch',
+    desc: "18 uses her android precision to punch a bitch in the throat. What now fool?",
     type:defence,
     image: eighteen.attack2,
     stack: 10,
@@ -185,7 +200,8 @@ var characters = [
 
   },
   attack3:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:'Riiiighht...',
+    desc: "18 moves out of the way. Goodluck hitting her now. She also shots some evasion beams at her enemy",
     type: evasionAttack,
     image: eighteen.attack3,
     stack: 5,
@@ -198,10 +214,12 @@ var characters = [
   health:100,
   attack:10,
   defence:10,
+  ref :"korra",
   image: korra.select,
   team: korra.team,
   attack1:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name: "I can control water, Bitch!!",
+    desc: "Korra uses her water controlling powers to own her enemy. She's of a badass",
     type:affliction,
     image: korra.attack1,
     stack: 5,
@@ -209,7 +227,8 @@ var characters = [
 
   },
   attack2:{
-    desc: "Dude. Gohan like gets mad and does this thing where his defense goes up for 2 turns. it's crazy",
+    name:"Earth Bending, Bitch!!",
+    desc: "Korra uses her earth bending skills to up her defence. Whud up? Get it?",
     type:defence,
     image: korra.attack2,
     stack: 10,
@@ -217,7 +236,8 @@ var characters = [
 
   },
   attack3:{
-    desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
+    name:'Throat Punch',
+    desc: "Korra can control the elements, but she's not too big for an old fashion throat punch",
     type: evasionAttack,
     image: korra.attack3,
     stack: 5,
