@@ -201,28 +201,41 @@ this.setState({
   }
 
   selectedCharacter(){
-    console.log(this.state.selectedCharacter)
     return(<ScrollView contentContainerStyle={{flex:1, alignItems:'center'}}>
+      <View style={{alignItems:'center', flexDirection:'row'}}>
+      <View>
+      <Text style= {{backgroundColor:'rgba(30,132,22,0.7)', padding:5, margin:5, color:'#fff'}}>Health:{this.state.selectedCharacter.health}</Text>
+      <Text style= {{backgroundColor:'rgba(52,66,152,0.7)', padding:5, margin:5, color:'#fff'}}>Defence:{this.state.selectedCharacter.defence}</Text>
+      <Text style= {{backgroundColor:'rgba(152,52,52,0.7)', padding:5, margin:5, color:'#fff'}}>Attack:{this.state.selectedCharacter.attack}</Text>
+      <Text style= {{backgroundColor:'rgba(130,52,152,0.7)', padding:5, margin:5, color:'#fff'}}>Evasion:{this.state.selectedCharacter.evasion}</Text>
+      </View>
+      <View style={{alignItems:'center'}}>
       <Image source={this.state.selectedCharacter.team} resizeMode="contain" style={{height:250, margin:10, width:250}} />
       <Text style={{fontSize:20, fontWeight:'200'}}>{this.state.selectedCharacter.name.toUpperCase()}</Text>
+      </View>
+      </View>
       <View>
-      <View style={{height:100, flexDirection:'row'}}>
+      <View style={{height:100, margin:10, flexDirection:'row'}}>
       <Image source={this.state.selectedCharacter.attack1.image} resizeMode='contain' style={{height:150, width:150 ,margin:5}} />
         <View style={{width:400, justifyContent:'center'}}>
         <Text style={{fontSize:18, fontWeight:'600'}}>{this.state.selectedCharacter.attack1.name}</Text>
-        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack1.desc}</Text></View>
+        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack1.desc}</Text>
+        <Text style={{fontSize:10, borderRadius:15, color:'#fff', width:120, textAlign:'center', backgroundColor:'rgba(130,52,152,0.7)', padding:5}}>{this.state.selectedCharacter.attack1.type.toUpperCase()}</Text></View>
       </View>
-      <View style={{height:100, flexDirection:'row'}}>
+      <View style={{height:100, margin:10, flexDirection:'row'}}>
       <Image source={this.state.selectedCharacter.attack2.image} resizeMode='contain' style={{height:150, width:150 ,margin:5}} />
         <View style={{width:400, justifyContent:'center'}}>
         <Text style={{fontSize:18, fontWeight:'600'}}>{this.state.selectedCharacter.attack2.name}</Text>
-        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack2.desc}</Text></View>
+        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack2.desc}</Text>
+                <Text style={{fontSize:10, borderRadius:15, color:'#fff', width:120, textAlign:'center', backgroundColor:'rgba(52,66,152,0.7)', padding:5}}>{this.state.selectedCharacter.attack2.type.toUpperCase()}</Text></View>
+
       </View>
-      <View style={{height:100, flexDirection:'row'}}>
+      <View style={{height:100, margin:10, flexDirection:'row'}}>
       <Image source={this.state.selectedCharacter.attack3.image} resizeMode='contain' style={{height:150, width:150 ,margin:5}} />
         <View style={{width:400, justifyContent:'center'}}>
         <Text style={{fontSize:18, fontWeight:'600'}}>{this.state.selectedCharacter.attack3.name}</Text>
-        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack3.desc}</Text></View>
+        <Text style={{fontSize:17}}>{this.state.selectedCharacter.attack3.desc}</Text>
+                <Text style={{fontSize:10, borderRadius:15, color:'#fff', width:120, textAlign:'center', backgroundColor:'rgba(152,52,52,0.7)', padding:5}}>{this.state.selectedCharacter.attack3.type.toUpperCase()}</Text></View>
       </View>
       </View>
       </ScrollView>)
@@ -321,7 +334,7 @@ this.setState({
       <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character3.health}/{this.state.heros[2].health}</Text>
       </View>
       </View>
-      <Modal style={{height:700, backgroundColor:"rgba(255,255,255,0.8)", width:width-100}} position={"bottom"} ref={"modal"} swipeArea={20}>
+      <Modal style={{height:800, backgroundColor:"rgba(255,255,255,0.8)", width:width-100}} position={"bottom"} ref={"modal"} swipeArea={20}>
           {this.selectedCharacter()}
         </Modal>
       </Image>
