@@ -38,6 +38,7 @@ export default class Splash extends Component {
       selected: ds.cloneWithRows(selectedChars),
       sorted:false
     }
+    selectedChars = []
   }
   componentWillMount(){
     this._animatedValue = new Animated.Value(0);

@@ -12,6 +12,7 @@ import {
 
 import Splash from './splash'
 import Battle from './battle'
+import GameOver from './gameover'
 import Character from './characterSelect'
 
 // I'm gonna keep state in here for this app as well
@@ -293,6 +294,14 @@ export default class Index extends Component {
       return (
         <Splash
         {...this.props} 
+        navigator={navigator} />
+        );
+    }
+    if (routeId === 'gameOver') {
+      return (
+        <GameOver
+        {...this.props} 
+        feedback = {route.feedback}
         navigator={navigator} />
         );
     }

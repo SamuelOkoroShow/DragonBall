@@ -139,7 +139,12 @@ this.setState({
 
   nextTurn(){
 
-    if (this.state.turnInt < 3){
+    if(this.state.turnArray.length == 0){
+      console.log("HI")
+    }
+    console.log(this.state.turnArray)
+
+    if (this.state.turnInt < this.state.turnArray.length-1){
         this.setState({
           turnInt: this.state.turnInt +1,
           showActions: false,
@@ -147,9 +152,14 @@ this.setState({
          
           
         }
-        if(this.state.turnInt == 2){
+        if(this.state.turnInt == this.state.turnArray.length-2){
            this.ai()
+           this.setState({
+        turnInt:0
+      })
         }
+
+
         
         
     
@@ -168,34 +178,25 @@ this.setState({
 
   attackAll(){
     var attackVal = 50;
-    this.setState({
-      character1:{...this.state.character1, health:this.state.character1.health-attackVal}
-    })
-    this.flip(this.state.character1,attackVal);
-    this.setState({
-      character2:{...this.state.character2, health:this.state.character2.health-attackVal}
-    })
-    this.flip(this.state.character2,attackVal);
-    this.setState({
-      character3:{...this.state.character3, health:this.state.character3.health-attackVal}
-    })
-    this.flip(this.state.character3,attackVal);
-  this.showCurrent(this.state.turnArray[this.state.turnInt])
-    this.setState({
-      showActions:false,
-      turnInt:0
-    })
+    for(var i = 0; i < this.state.teamArr.length; i++ ){
+        this.state.teamArr[i].health = this.state.teamArr[i].health - attackVal
+        this.flip(this.state.teamArr[i],attackVal);
+      
+          this.checkForDeath(this.state.teamArr[i])
+    }
+    this.showCurrent(this.state.turnArray[this.state.turnInt])
+        this.setState({
+          showActions:false,
+          turnInt:0
+        })
 
-    this.checkForDeath(this.state.character1)
-    this.checkForDeath(this.state.character2)
-    this.checkForDeath(this.state.character3)
 
     
   }
   gameOver(x){
-    this.navigator.push({
+    this.props.navigator.push({
       id: 'gameOver',
-      winner: x
+      feedback: x
     })
   }
 
@@ -221,14 +222,21 @@ this.setState({
       
     }
     if(x.type == evasion){
-  
+       attackVal = Math.ceil(Math.random() * 100/3) + 10
+      this.setState({
+              enemy: {...this.state.enemy, health: this.state.enemy.health - attackVal}
+            })
+          this.flip(this.state.enemy,attackVal);
+      
     }
+  
+    
     if(x.type == evasionAttack){
 
     }
     this.nextTurn()
     if(this.state.enemy.health <= 0){
-      this.gameOver()
+      this.gameOver("You Win")
     }
 
   }
@@ -239,16 +247,27 @@ this.setState({
   }
   isDead(char){
     var newTeam = this.state.teamArr
+    var newTurn = this.state.turnArray
 for (var i =0; i < newTeam.length; i++)
    if (newTeam[i].name === char.name) {
       newTeam.splice(i,1);
+      newTurn.splice(i,1);
       break;
    }  
 
    this.setState({
-              teamArr: newTeam
-
+              teamArr: newTeam,
+              turnArray: newTurn
             })
+   this.setState({
+    team: ds.cloneWithRows(this.state.teamArr)
+   })
+
+
+   if(this.state.teamArr == []){
+    console.log("You Lose")
+    this.gameOver("You Lose")
+   }
 
  }
 
@@ -262,9 +281,10 @@ for (var i =0; i < newTeam.length; i++)
   flip(player, val){
     // I dont know a simplier way to do this. sorry guys
     if(player == this.state.enemy){
+      player.health = player.health - val
 
         this.setState({
-          enemy: {...player, flip:true, health:player.health - val},
+          enemy: {...player, flip:true,},
           attackVal:val,
           vegetaCards: ds.cloneWithRows(tiles2)
         })
@@ -277,7 +297,7 @@ for (var i =0; i < newTeam.length; i++)
         else if(player == this.state.character1){
     
         this.setState({
-          character1: {...player, flip:true, health:player.health - val},
+          character1: {...player, flip:true, health: player.health - val},
           attackVal:val,
           team: ds.cloneWithRows(this.state.teamArr),
 
@@ -337,6 +357,10 @@ for (var i =0; i < newTeam.length; i++)
   }
 
   showCurrent(x){
+    console.log(this.state.turnArray[0].name)
+    if(this.state.turnArray[0].name == "Vegeta"){
+      this.gameOver("You Lose")
+    }
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     this.setState({
       currentplayer: ds.cloneWithRows([x.attack1,x.attack2,x.attack3]),
@@ -360,7 +384,8 @@ for (var i =0; i < newTeam.length; i++)
   }
   centerView(){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    if(this.state.turnInt != 3){
+
+    if(this.state.turnInt != this.state.turnArray.length-1){
         if(!this.state.showActions){
             return(
               <View style={{flex:1, justifyContent:'center'}}>
@@ -445,7 +470,27 @@ for (var i =0; i < newTeam.length; i++)
   }
 
   cardSet(x){
-    if(x.type == null){
+    // This is for dead characters
+      if(x == null){
+        return(
+          <TouchableOpacity onPress ={() => this.queueModal(x)}>
+          <FlipCard
+
+
+          style={{ width:width/3 - 20, margin:10, borderWidth:0}}
+          clickable={false}
+          >
+      {/* Face Side */}
+      <Image source={require('../images/cardBack.png')} resizeMode="stretch" style={{borderRadius:8, flex:1, width:null, height:null, alignItems:'center', justifyContent:'center'}}>
+      </Image>
+      {/* Back Side */}
+      <Image source={require('../images/cardFlip.jpg')} resizeMode="stretch" style={{borderRadius:8, flex:1, width:null, height:null, alignItems:'center', justifyContent:'center'}}>
+        <Text style={{fontSize:38, color:'#a61f1f', fontWeight:'700'}}>-{this.state.attackVal}</Text>
+      </Image>
+    </FlipCard>
+    </ TouchableOpacity>
+    )}
+    else if(x.type == null){
         return(
           <TouchableOpacity onPress ={() => this.queueModal(x)}>
           <FlipCard
@@ -500,6 +545,9 @@ for (var i =0; i < newTeam.length; i++)
     </FlipCard>
     </ TouchableOpacity>
     )}
+
+    
+  
   }
 
   render() {
@@ -523,21 +571,22 @@ for (var i =0; i < newTeam.length; i++)
       <ListView 
       horizontal = {true}
       style={{flex:2}}
+      enableEmptySections = {true}
       dataSource = {this.state.team}
       renderRow={(rowData) => this.cardSet(rowData)}
       />
       <View style={{flex:1, justifyContent:'space-around', flexDirection:'row'}}>
       <View style={{width:100,}}>
       <Text style={{color:'#fff', width:100, height:30, fontWeight:'800', margin:3, textAlign:'center', fontSize:30}}>{this.state.heros[0].name}</Text>
-      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character1.health}/{this.state.heros[0].health}</Text>
+      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character1.health}/100</Text>
       </View>
       <View style={{width:100,}}>
       <Text style={{color:'#fff', width:100, height:30, fontWeight:'800', margin:3, textAlign:'center', fontSize:30}}>{this.state.heros[1].name}</Text>
-      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character2.health}/{this.state.heros[1].health}</Text>
+      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character2.health}/100</Text>
       </View>
       <View style={{width:100,}}>
-      <Text style={{color:'#fff', width:100, height:30, fontWeight:'800', margin:3, textAlign:'center', fontSize:30}}>{this.state.heros[2].name}</Text>
-      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character3.health}/{this.state.heros[2].health}</Text>
+      <Text style={{color:'#fff', width:100, height:30, fontWeight:'800', margin:3, textAlign:'center', fontSize:30}}>{this.props.team[2].name}</Text>
+      <Text style={{color:"#fff", margin:3, fontSize:25, textAlign:'center'}}>{this.state.character3.health}/100</Text>
       </View>
       </View>
       <Modal style={{height:800, backgroundColor:"rgba(255,255,255,0.8)", width:width-100}} position={"bottom"} ref={"modal"} swipeArea={20}>
