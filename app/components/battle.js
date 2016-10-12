@@ -47,6 +47,7 @@ var vegeta = {
   attack:20,
   defence:10,
   team: vegetaIm.team,
+  flip:false,
   attack1:{
     name:'Dodge This!!',
     desc: "Gohan uses his bad ass karate skills to kick your enemy's ass. This causes like serious damage, dude",
@@ -92,11 +93,13 @@ export default class battle extends Component {
     this.state = {
       vegetaCards: ds.cloneWithRows(tiles2),
       width:0,
+      turnInt:0,
       showActions: false,
       selectedCharacter: vegeta,
       currentplayer: ds.cloneWithRows([]),
       character1: this.props.team[0],
       character2: this.props.team[1],
+      attackVal: 0,
       character3: this.props.team[2],
       turnArray: [this.props.team[0],this.props.team[1],this.props.team[2], vegeta],
       enemy:vegeta,
@@ -108,8 +111,11 @@ export default class battle extends Component {
   
   componentDidMount(){
     setTimeout(() => {this.runAnimate()}, 1000);
-
+    this.setState({
+      team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+    })
   }
+
 
    runAnimate(){
      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
@@ -126,22 +132,72 @@ this.setState({
     })
   }
   updateHealth(){}
+
   nextTurn(){
-    turnInt++;
+    if (this.state.turnInt < 3){
+        this.setState({
+          turnInt: this.state.turnInt +1,
+          showActions: false,
+        })}else{
+         
+          
+        }
+        if(this.state.turnInt == 2){
+           this.ai()
+        }
+        
+        
+    
   }
 
-  action(type, tile, attack, defence){
-    if(type == affliction){
+  ai(){
 
-    }if(type == defence){
+    setTimeout(() => {
 
-    }if(type == evasion){
+       this.showCurrent(this.state.enemy)
+    }, 2000)
+
+  }
+  gameOver(x){
+    this.navigator.push({
+      id: 'gameOver',
+      winner: x
+    })
+  }
+
+
+
+// We get turn character from turnArray
+  turn(x, char){
+    var attackVal = char.attack * x.stack;
+    attackVal = attackVal - (this.state.enemy.defence - 3)
+    if(x.type == affliction){
+      this.setState({
+              enemy: {...this.state.enemy, health: this.state.enemy.health - attackVal}
+            })
+
+          this.flip(this.state.enemy,attackVal);
+    }
+    if(x.type == defence){
+      this.setState({
+              enemy: {...this.state.enemy, health: this.state.enemy.health - char.attack}
+            })
+      
+    }
+    if(x.type == evasion){
+  
+    }
+    if(x.type == evasionAttack){
 
     }
-  }
+    this.nextTurn()
+    if(this.state.enemy.health <= 0){
+      this.gameOver()
+    }
 
-  turnLogin(){
-    
+  }
+  dead(char){
+
   }
 
   queueModal(x){
@@ -149,6 +205,20 @@ this.setState({
       selectedCharacter:x
     })
     this.refs.modal.open();
+  }
+
+  flip(player, val){
+    console.log(this.refs)
+    this.setState({
+      enemy: {...this.state.enemy, flip:true, health:this.state.enemy.health - val},
+      attackVal:val,
+      vegetaCards: ds.cloneWithRows(tiles2)
+    })
+    setTimeout(() => {this.setState({
+          enemy: {...this.state.enemy, flip:false},
+          attackVal:val,
+          vegetaCards: ds.cloneWithRows(tiles2)
+        })}, 800)
   }
 
   move(char, location){
@@ -175,34 +245,61 @@ this.setState({
   }
 
   attack(x){
-    return(<TouchableOpacity style={{backgroundColor:'rgba(0,0,0,0.5)', alignItems:'center', width:200, height:200, padding:10, margin:10}}>
+    return(<TouchableOpacity onPress={() => this.turn(x,this.state.turnArray[this.state.turnInt])} style={{backgroundColor:'rgba(0,0,0,0.5)', alignItems:'center', width:200, height:200, padding:10, margin:10}}>
       <Image source={x.image} resizeMode = "contain" style={{height:150, width:150}} />
       <Text style={{color:'#fff',textAlign:'center' }}>{x.name.toUpperCase()}</Text>
       </TouchableOpacity>)
   }
+  attackAI(x){
+    return(<View onPress={() => this.turn(x,this.state.turnArray[3])} style={{backgroundColor:'rgba(0,0,0,0.5)', alignItems:'center', width:200, height:200, padding:10, margin:10}}>
+      <Image source={x.image} resizeMode = "contain" style={{height:150, width:150}} />
+      <Text style={{color:'#fff',textAlign:'center' }}>{x.name.toUpperCase()}</Text>
+      </View>)
+  }
   centerView(){
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    if(!this.state.showActions){
-        return(
-          <View style={{flex:1, justifyContent:'center'}}>
-          <TouchableOpacity onPress = {() => this.showCurrent(this.state.turnArray[turnInt])} style={{borderLeftWidth:5, borderColor:'#fff', backgroundColor:'#444', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
-          <Text style={{color:'#fff', fontSize:25, fontWeight:'800', padding:10}}>{this.state.turnArray[turnInt].name}'s Turn</Text>
-          </TouchableOpacity>
-           <TouchableOpacity style={{borderLeftWidth:5, borderColor:'#444', backgroundColor:'#fff', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
-          <Text style={{color:'#444', fontSize:25, fontWeight:'800', padding:10}}>Skip Turn</Text>
-          </TouchableOpacity>
-          </View>)}else{
-          return(
-            <View style={{flex:1, justifyContent:'center'}}>
-            <ListView 
-      horizontal = {true}
-      style={{height:200, width:width}}
-      contentContainerStyle = {{justifyContent:'center'}}
-      dataSource = {this.state.currentplayer}
-      renderRow={(rowData) => this.attack(rowData)}
-      /></View>)
+    if(this.state.turnInt != 3){
+        if(!this.state.showActions){
+            return(
+              <View style={{flex:1, justifyContent:'center'}}>
+              <TouchableOpacity onPress = {() => this.showCurrent(this.state.turnArray[this.state.turnInt])} style={{borderLeftWidth:5, borderColor:'#fff', backgroundColor:'#444', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
+              <Text style={{color:'#fff', fontSize:25, fontWeight:'800', padding:10}}>{this.state.turnArray[this.state.turnInt].name}'s Turn</Text>
+              </TouchableOpacity>
+               <TouchableOpacity onPress={() =>this.nextTurn()} style={{borderLeftWidth:5, borderColor:'#444', backgroundColor:'#fff', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
+              <Text style={{color:'#444', fontSize:25, fontWeight:'800', padding:10}}>Skip Turn</Text>
+              </TouchableOpacity>
+              </View>)}else{
+              return(
+                <View style={{flex:1, justifyContent:'center'}}>
+                <ListView 
+          horizontal = {true}
+          style={{height:200, width:width}}
+          contentContainerStyle = {{justifyContent:'center'}}
+          dataSource = {this.state.currentplayer}
+          renderRow={(rowData) => this.attack(rowData)}
+          /></View>)}}else{
+                if(!this.state.showActions){
+            return(
+              <View style={{flex:1, justifyContent:'center'}}>
+              <View onPress = {() => this.showCurrent(this.state.turnArray[this.state.turnInt])} style={{borderLeftWidth:5, borderColor:'#fff', backgroundColor:'#444', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
+              <Text style={{color:'#fff', fontSize:25, fontWeight:'800', padding:10}}>{this.state.turnArray[this.state.turnInt].name}'s Turn</Text>
+              </View>
+               <View onPress={() =>this.nextTurn()} style={{borderLeftWidth:5, borderColor:'#444', backgroundColor:'#fff', justifyContent:'center', margin:10, height:60, width:this.state.width}}>
+              <Text style={{color:'#444', fontSize:25, fontWeight:'800', padding:10}}>Skip Turn</Text>
+              </View>
+              </View>)}else{
+              return(
+                <View style={{flex:1, justifyContent:'center'}}>
+                <ListView 
+          horizontal = {true}
+          style={{height:200, width:width}}
+          contentContainerStyle = {{justifyContent:'center'}}
+          dataSource = {this.state.currentplayer}
+          renderRow={(rowData) => this.attackAI(rowData)}
+          /></View>)}
+              }
         }
-  }
+  
 
   selectedCharacter(){
     return(<ScrollView contentContainerStyle={{flex:1, alignItems:'center'}}>
@@ -250,7 +347,8 @@ this.setState({
         return(
           <TouchableOpacity onPress ={() => this.queueModal(x)}>
           <FlipCard
-          ref = {x.ref} 
+          ref = {x.ref}
+          flip = {x.flip} 
           style={{ width:width/3 - 20, margin:10, borderWidth:0}}
           clickable={false}
           >
@@ -268,6 +366,7 @@ this.setState({
         return(
           <TouchableOpacity >
           <FlipCard 
+          flip = {this.state.enemy.flip} 
           style={{ width:width/3 - 20, margin:10, borderWidth:0}}
           clickable={false}
           >
@@ -277,7 +376,7 @@ this.setState({
       </Image>
       {/* Back Side */}
       <Image source={require('../images/cardFlip.jpg')} resizeMode="stretch" style={{borderRadius:8, flex:1, width:null, height:null, alignItems:'center', justifyContent:'center'}}>
-        <Text style={{fontSize:28}}>The Back</Text>
+        <Text style={{fontSize:38, color:'#a61f1f', fontWeight:'700'}}>-{this.state.attackVal}</Text>
       </Image>
     </FlipCard>
     </ TouchableOpacity>
@@ -285,6 +384,7 @@ this.setState({
         return(
           <TouchableOpacity >
           <FlipCard 
+          ref = {x.ref} 
           style={{ width:width/3 - 20, margin:10, borderWidth:0}}
           clickable={false}
           >
