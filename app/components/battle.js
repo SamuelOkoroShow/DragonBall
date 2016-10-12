@@ -100,6 +100,7 @@ export default class battle extends Component {
       character1: this.props.team[0],
       character2: this.props.team[1],
       attackVal: 0,
+      teamArr: this.props.team,
       character3: this.props.team[2],
       turnArray: [this.props.team[0],this.props.team[1],this.props.team[2], vegeta],
       enemy:vegeta,
@@ -112,7 +113,10 @@ export default class battle extends Component {
   componentDidMount(){
     setTimeout(() => {this.runAnimate()}, 1000);
     this.setState({
-      team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+      teamArr: [this.state.character1, this.state.character2, this.state.character3]
+    })
+    this.setState({
+      team: ds.cloneWithRows(this.state.teamArr),
     })
   }
 
@@ -234,7 +238,7 @@ this.setState({
     }
   }
   isDead(char){
-    var newTeam = [this.state.character1,this.state.character2,this.state.character3]
+    var newTeam = this.state.teamArr
 for (var i =0; i < newTeam.length; i++)
    if (newTeam[i].name === char.name) {
       newTeam.splice(i,1);
@@ -242,8 +246,7 @@ for (var i =0; i < newTeam.length; i++)
    }  
 
    this.setState({
-              character1: {...player, flip:false},
-              team: ds.cloneWithRows(newTeam),
+              teamArr: newTeam
 
             })
 
@@ -276,12 +279,12 @@ for (var i =0; i < newTeam.length; i++)
         this.setState({
           character1: {...player, flip:true, health:player.health - val},
           attackVal:val,
-          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+          team: ds.cloneWithRows(this.state.teamArr),
 
         })
         setTimeout(() => {this.setState({
               character1: {...player, flip:false},
-              team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+              team: ds.cloneWithRows(this.state.teamArr),
 
             })}, 800)
 
@@ -290,12 +293,12 @@ for (var i =0; i < newTeam.length; i++)
         this.setState({
           character2: {...player, flip:true, health:player.health - val},
           attackVal:val,
-          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+          team: ds.cloneWithRows(this.state.teamArr),
 
         })
         setTimeout(() => {this.setState({
               character2: {...player, flip:false},
-              team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+              team: ds.cloneWithRows(this.state.teamArr),
 
             })}, 800)
 
@@ -304,7 +307,7 @@ for (var i =0; i < newTeam.length; i++)
         this.setState({
           character3: {...player, flip:true, health:player.health - val},
           attackVal:val,
-          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+          team: ds.cloneWithRows(this.state.teamArr),
 
         })
         setTimeout(() => {this.setState({
@@ -313,7 +316,7 @@ for (var i =0; i < newTeam.length; i++)
 
         
         setTimeout(() => {this.setState({
-                          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+                          team: ds.cloneWithRows(this.state.teamArr),
 
             })}, 1300)
 
