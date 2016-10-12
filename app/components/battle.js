@@ -181,6 +181,11 @@ this.setState({
       showActions:false,
       turnInt:0
     })
+
+    this.checkForDeath(this.state.character1)
+    this.checkForDeath(this.state.character2)
+    this.checkForDeath(this.state.character3)
+
     
   }
   gameOver(x){
@@ -223,9 +228,26 @@ this.setState({
     }
 
   }
-  dead(char){
-
+  checkForDeath(char){
+    if(char.health <= 0){
+      this.isDead(char)
+    }
   }
+  isDead(char){
+    var newTeam = [this.state.character1,this.state.character2,this.state.character3]
+for (var i =0; i < newTeam.length; i++)
+   if (newTeam[i].name === char.name) {
+      newTeam.splice(i,1);
+      break;
+   }  
+
+   this.setState({
+              character1: {...player, flip:false},
+              team: ds.cloneWithRows(newTeam),
+
+            })
+
+ }
 
   queueModal(x){
     this.setState({
