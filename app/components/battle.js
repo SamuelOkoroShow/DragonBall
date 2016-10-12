@@ -90,6 +90,9 @@ var tiles1 = [occupied, occupied, occupied, empty, empty,empty]
 export default class battle extends Component {
   constructor(props){
     super(props)
+    var char1 = this.props.team[0]
+    var char2 = this.props.team[1]
+    var char3 = this.props.team[2]
     this.state = {
       vegetaCards: ds.cloneWithRows(tiles2),
       width:0,
@@ -97,11 +100,11 @@ export default class battle extends Component {
       showActions: false,
       selectedCharacter: vegeta,
       currentplayer: ds.cloneWithRows([]),
-      character1: this.props.team[0],
-      character2: this.props.team[1],
+      character1: char1,
+      character2: char2,
       attackVal: 0,
       teamArr: this.props.team,
-      character3: this.props.team[2],
+      character3: char3,
       turnArray: [this.props.team[0],this.props.team[1],this.props.team[2], vegeta],
       enemy:vegeta,
       heros: this.props.team,

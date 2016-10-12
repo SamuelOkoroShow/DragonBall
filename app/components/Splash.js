@@ -31,7 +31,7 @@ export default class Splash extends Component {
   render() {
     return (
       <View style={styles.container} >
-            <Image source ={require('../images/vegetaSplash.png')} resizeMode="contain" style={{height:300, width:300}} />
+            <Image source ={require('../images/vegetaSplash.png')} resizeMode="contain" style={{height:400, width:400}} />
       </View>
     );
   }
