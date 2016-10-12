@@ -134,6 +134,7 @@ this.setState({
   updateHealth(){}
 
   nextTurn(){
+
     if (this.state.turnInt < 3){
         this.setState({
           turnInt: this.state.turnInt +1,
@@ -155,8 +156,32 @@ this.setState({
     setTimeout(() => {
 
        this.showCurrent(this.state.enemy)
-    }, 2000)
+    }, 600)
+    setTimeout(() =>{this.attackAll()
+    }, 1000)
 
+  }
+
+  attackAll(){
+    var attackVal = 50;
+    this.setState({
+      character1:{...this.state.character1, health:this.state.character1.health-attackVal}
+    })
+    this.flip(this.state.character1,attackVal);
+    this.setState({
+      character2:{...this.state.character2, health:this.state.character2.health-attackVal}
+    })
+    this.flip(this.state.character2,attackVal);
+    this.setState({
+      character3:{...this.state.character3, health:this.state.character3.health-attackVal}
+    })
+    this.flip(this.state.character3,attackVal);
+  this.showCurrent(this.state.turnArray[this.state.turnInt])
+    this.setState({
+      showActions:false,
+      turnInt:0
+    })
+    
   }
   gameOver(x){
     this.navigator.push({
@@ -179,9 +204,11 @@ this.setState({
           this.flip(this.state.enemy,attackVal);
     }
     if(x.type == defence){
+      attackVal = Math.ceil(Math.random() * 100)
       this.setState({
-              enemy: {...this.state.enemy, health: this.state.enemy.health - char.attack}
+              enemy: {...this.state.enemy, health: this.state.enemy.health - attackVal}
             })
+          this.flip(this.state.enemy,attackVal);
       
     }
     if(x.type == evasion){
@@ -208,17 +235,67 @@ this.setState({
   }
 
   flip(player, val){
-    console.log(this.refs)
-    this.setState({
-      enemy: {...this.state.enemy, flip:true, health:this.state.enemy.health - val},
-      attackVal:val,
-      vegetaCards: ds.cloneWithRows(tiles2)
-    })
-    setTimeout(() => {this.setState({
-          enemy: {...this.state.enemy, flip:false},
+    // I dont know a simplier way to do this. sorry guys
+    if(player == this.state.enemy){
+
+        this.setState({
+          enemy: {...player, flip:true, health:player.health - val},
           attackVal:val,
           vegetaCards: ds.cloneWithRows(tiles2)
-        })}, 800)
+        })
+        setTimeout(() => {this.setState({
+              enemy: {...player, flip:false},
+              attackVal:val,
+              vegetaCards: ds.cloneWithRows(tiles2)
+            })}, 800)}
+
+        else if(player == this.state.character1){
+    
+        this.setState({
+          character1: {...player, flip:true, health:player.health - val},
+          attackVal:val,
+          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+        })
+        setTimeout(() => {this.setState({
+              character1: {...player, flip:false},
+              team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+            })}, 800)
+
+        }else if(player == this.state.character2){
+    
+        this.setState({
+          character2: {...player, flip:true, health:player.health - val},
+          attackVal:val,
+          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+        })
+        setTimeout(() => {this.setState({
+              character2: {...player, flip:false},
+              team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+            })}, 800)
+
+        }else if(player == this.state.character3){
+    
+        this.setState({
+          character3: {...player, flip:true, health:player.health - val},
+          attackVal:val,
+          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+        })
+        setTimeout(() => {this.setState({
+              character3: {...player, flip:false},
+            })}, 800)
+
+        
+        setTimeout(() => {this.setState({
+                          team: ds.cloneWithRows([this.state.character1,this.state.character2,this.state.character3]),
+
+            })}, 1300)
+
+        }
   }
 
   move(char, location){
@@ -358,7 +435,7 @@ this.setState({
       </Image>
       {/* Back Side */}
       <Image source={require('../images/cardFlip.jpg')} resizeMode="stretch" style={{borderRadius:8, flex:1, width:null, height:null, alignItems:'center', justifyContent:'center'}}>
-        <Text style={{fontSize:28}}>The Back</Text>
+        <Text style={{fontSize:38, color:'#a61f1f', fontWeight:'700'}}>-{this.state.attackVal}</Text>
       </Image>
     </FlipCard>
     </ TouchableOpacity>
